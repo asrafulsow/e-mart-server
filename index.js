@@ -39,20 +39,33 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const serviceCollection = client.db(`eMart`).collection("posts");
+    const postCollection = client.db(`eMart`).collection("posts");
+    const productCollection = client.db(`eMart`).collection("products");
+    const userCollection = client.db(`eMart`).collection("users");
 
     app.get("/", async (req, res) => {
       res.send("Welcome To E-Mart Server");
     });
-    app.get("/post", async (req, res) => {
+    app.get("/posts", async (req, res) => {
       const query = {};
-      const result = await serviceCollection.find(query).toArray();
+      const result = await postCollection.find(query).toArray();
       res.send(result);
     });
-    app.get("/post/:id", async (req, res) => {
+    app.get("/products", async (req, res) => {
+      const query = {};
+      const result = await productCollection.find(query).toArray();
+      res.send(result);
+    });
+    // app.get("/product", async (req, res) => {
+    //   const query = {};
+    //   const result = await productCollection.find(query).toArray();
+    //   res.send(result);
+    //   console.log(result);
+    // });
+    app.get("/posts/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const result = await serviceCollection.findOne(query);
+      const result = await postCollection.findOne(query);
       res.send(result);
     });
   } finally {
