@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5050;
+const port = process.env.PORT || 5088;
 const cors = require("cors");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -42,6 +42,7 @@ async function run() {
     const postCollection = client.db(`eMart`).collection("posts");
     const productCollection = client.db(`eMart`).collection("products");
     const userCollection = client.db(`eMart`).collection("users");
+    const commentCollection = client.db(`eMart`).collection("comments");
 
     app.get("/", async (req, res) => {
       res.send("Welcome To E-Mart Server");
@@ -56,16 +57,22 @@ async function run() {
       const result = await productCollection.find(query).toArray();
       res.send(result);
     });
-    // app.get("/product", async (req, res) => {
-    //   const query = {};
-    //   const result = await productCollection.find(query).toArray();
-    //   res.send(result);
-    //   console.log(result);
-    // });
     app.get("/posts/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await postCollection.findOne(query);
+      res.send(result);
+    });
+    app.post("/comment", async (req, res) => {
+      const comment = req.body;
+      console.log(comment);
+      const result = await commentCollection.insertOne(comment);
+      console.log(result);
+      res.send(result);
+    });
+    app.get("/comment", async (req, res) => {
+      const query = {};
+      const result = await commentCollection.find(query).toArray();
       res.send(result);
     });
   } finally {
