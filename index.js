@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5088;
+const port = process.env.PORT || 5000;
 const cors = require("cors");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -81,5 +81,5 @@ async function run() {
 run().catch(console.dir);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`listining port ${port}`);
 });
